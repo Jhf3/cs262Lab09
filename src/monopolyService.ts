@@ -150,7 +150,7 @@ function readAdventuresByRegion(request: Request, response: Response, next: Next
 // Get Adventurer data
 function readAdventurer(request: Request, response: Response, next: NextFunction): void {
     db.manyOrNone(
-        'SELECT * FROM Adventurer WHERE adventurerID=${id}'
+        'SELECT * FROM Adventurer WHERE ID=${id}'
         , request.params)
         .then((data: any[]): void => {
             response.send(data);
@@ -162,7 +162,7 @@ function readAdventurer(request: Request, response: Response, next: NextFunction
 // Get all completed adventures by adventurer
 function readAdventuresCompletedByAdventurer(request: Request, response: Response, next: NextFunction): void {
     db.manyOrNone(
-        'SELECT COUNT(*) FROM Adventur WHERE adventurerID=${id}'
+        'SELECT * FROM CompletedAdventure WHERE adventurerID=${id}'
         , request.params)
         .then((data: any[]): void => {
             response.send(data);
