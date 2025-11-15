@@ -92,12 +92,23 @@ router.delete('/games/:id', deleteGame);
 
 
 // Project routes (ignore for Lab/HW) //
+// Default Domain: cs262lab09-bqekb7ezfnhxctc7.canadacentral-01.azurewebsites.net
+
+/* Homepage Routes */
 router.get('/adventures', readAdventures);
 router.get('/adventuresInRegion/:id', readAdventuresByRegion);
 
-/*  Profile Page  */
+/*  Profile Routes  */
 router.get('/adventurer/:id', readAdventurer);
-router.get('/readAdventuresCompletedByAdventurer/:id', readAdventuresCompletedByAdventurer)
+router.get('/AdventuresCompleted/:id', readAdventuresCompletedByAdventurer)
+
+/* Create Adventure Routes */
+router.get('regions', readRegions);
+router.get('landmarks/:id', readLandmarksInRegion)
+
+/* Playing Adventure Routes */
+// Use landmarks/:id route to get landmarks in region
+router.get('tokens/:id', readTokensInAdventure)
 
 
 app.use(router);
@@ -147,7 +158,6 @@ function readAdventuresByRegion(request: Request, response: Response, next: Next
 }
 
 /*  Profile Page  */
-// Get Adventurer data
 function readAdventurer(request: Request, response: Response, next: NextFunction): void {
     db.manyOrNone(
         'SELECT * FROM Adventurer WHERE ID=${id}'
@@ -159,7 +169,6 @@ function readAdventurer(request: Request, response: Response, next: NextFunction
             next(error);
         });
 }
-// Get all completed adventures by adventurer
 function readAdventuresCompletedByAdventurer(request: Request, response: Response, next: NextFunction): void {
     db.manyOrNone(
         'SELECT * FROM CompletedAdventure WHERE adventurerID=${id}'
@@ -172,9 +181,40 @@ function readAdventuresCompletedByAdventurer(request: Request, response: Respons
         });
 }
 
+/* Create Adventure */
+function readRegions(request: Request, response: Response, next: NextFunction): void {
+    db.manyOrNone('SELECT * FROM Region')
+        .then((data: any[]): void => {
+            response.send(data);
+        })
+        .catch((error: Error): void => {
+            next(error);
+        });
+}
 
+function readLandmarksInRegion(request: Request, response: Response, next: NextFunction): void {
+    db.manyOrNone(
+        'SELECT * FROM Landmark WHERE regionID=${id}'
+        , request.params)
+        .then((data: any[]): void => {
+            response.send(data);
+        })
+        .catch((error: Error): void => {
+            next(error);
+        });
+}
 
-
+/* Play Adventure */
+function readTokensInAdventure(request: Request, response: Response, next: NextFunction): void {
+    db.manyOrNone('SELECT * FROM Token WHERE adventureID=${id}'
+        , request.params)
+        .then((data: any[]): void => {
+            response.send(data);
+        })
+        .catch((error: Error): void => {
+            next(error);
+        });
+}
 
 
 
