@@ -318,5 +318,4 @@ function deleteGame(request: Request, response: Response, next: NextFunction): v
         .catch((error: Error): void => {
             next(error);
         });
-
 }
