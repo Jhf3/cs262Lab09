@@ -103,12 +103,12 @@ router.get('/adventurer/:id', readAdventurer);
 router.get('/AdventuresCompleted/:id', readAdventuresCompletedByAdventurer)
 
 /* Create Adventure Routes */
-router.get('regions', readRegions);
-router.get('landmarks/:id', readLandmarksInRegion)
+router.get('/regions', readRegions);
+router.get('/landmarks/:id', readLandmarksInRegion)
 
 /* Playing Adventure Routes */
 // Use landmarks/:id route to get landmarks in region
-router.get('tokens/:id', readTokensInAdventure)
+router.get('/tokens/:id', readTokensInAdventure)
 
 
 app.use(router);
